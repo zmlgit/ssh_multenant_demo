@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hibernate-configuration
+        xmlns="http://www.hibernate.org/xsd/hibernate-configuration"
+        xsi:schemaLocation="http://www.hibernate.org/xsd/hibernate-configuration
+         http://www.hibernate.org/xsd/hibernate-configuration/hibernate-configuration-4.0.xsd"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <session-factory/>
+
+</hibernate-configuration>
