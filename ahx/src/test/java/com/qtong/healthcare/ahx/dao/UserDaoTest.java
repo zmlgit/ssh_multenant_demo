@@ -26,11 +26,34 @@ public class UserDaoTest {
     @Test
     public void test(){
         IAccountService accountService=context.getBean(IAccountService.class);
+
+        Action loginAction=new Action("login");
+
+        Action logoutAction=new Action("logout");
+
+        Set<Action> actions=new HashSet<>();
+
+        actions.add(loginAction);
+
+        actions.add(logoutAction);
+
+        Role aRole=new Role();
+
+        aRole.setRoleName("aRole");
+
+        aRole.setActions(actions);
+
+
+        Set<Role> roles=new HashSet<>();
+
+        roles.add(aRole);
+
         User user=new User();
         user.setUsername("admin3");
 
         user.setPassword("admin");
-      //  userDao.list(user,"username");
+
+        user.setRoles(roles);
 
         accountService.saveUser(user);
 

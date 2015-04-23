@@ -33,4 +33,17 @@ public class Action implements Serializable {
     public void setPath(String path) {
         this.path = path;
     }
+
+
+    public Action(long actionId, String path) {
+        this.actionId = actionId;
+        this.path = path;
+    }
+
+    public Action() {
+    }
+
+    public Action(String path) {
+        this.path = path;
+    }
 }

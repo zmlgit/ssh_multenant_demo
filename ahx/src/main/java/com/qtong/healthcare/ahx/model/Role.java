@@ -48,7 +48,7 @@ public class Role implements Serializable {
                 ", roleName='" + roleName + '\'' +
                 '}';
     }
-    @OneToMany(targetEntity = Action.class,cascade = CascadeType.PERSIST)
+    @OneToMany(targetEntity = Action.class,cascade = CascadeType.ALL)
     @JoinTable(name = "t_role_action",joinColumns = @JoinColumn(name="actionId"),inverseJoinColumns = @JoinColumn(name = "roleId"))
     public Set<Action> getActions() {
         return actions;

@@ -13,7 +13,8 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "t_user")
-public class User implements Serializable {
+@Cacheable(value = true)
+public class  User implements Serializable {
     private int userId;
 
     private String username;
@@ -30,6 +31,7 @@ public class User implements Serializable {
 
     private Set<Role> roles;
     private String salt;
+    private boolean locked;
 
     @Override
     public String toString() {
@@ -41,7 +43,7 @@ public class User implements Serializable {
                 ", overdue=" + overdue +
                 ", lastUpdate=" + lastUpdate +
                 ", mail='" + mail + '\'' +
-                ", tenantId=" + tenantId +
+                ", tenantId=" + tenant +
                 ", salt='" + salt + '\'' +
                 '}';
     }
@@ -105,7 +107,7 @@ public class User implements Serializable {
     }
 
 
-    @OneToMany(targetEntity = Role.class,cascade = CascadeType.PERSIST)
+    @OneToMany(targetEntity = Role.class,cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinTable(name = "t_user_role",joinColumns = @JoinColumn(name = "roleId"),inverseJoinColumns = @JoinColumn(name = "userId"))
     public Set<Role> getRoles() {
         return roles;
@@ -115,16 +117,16 @@ public class User implements Serializable {
         this.roles = roles;
     }
 
-    private Tenant tenantId;
+    private Tenant tenant;
 
-    public void setTenantId(Tenant tenantId) {
-        this.tenantId = tenantId;
+    public void setTenant(Tenant tenant) {
+        this.tenant = tenant;
     }
 
     @ManyToOne(targetEntity = Tenant.class,cascade = CascadeType.ALL)
     @JoinColumn(name = "tenantId")
-    public Tenant getTenantId() {
-        return tenantId;
+    public Tenant getTenant() {
+        return tenant;
     }
 
 
@@ -134,5 +136,13 @@ public class User implements Serializable {
 
     public String getSalt() {
         return salt;
+    }
+
+    public boolean isLocked() {
+        return locked;
+    }
+
+    public void setLocked(boolean locked) {
+        this.locked = locked;
     }
 }

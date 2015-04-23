@@ -7,6 +7,7 @@ import com.qtong.healthcare.ahx.utils.EndecryptUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Set;
 
 /**
  * Created by ZML on 2015/4/22.
@@ -28,5 +29,26 @@ public class AccountService implements IAccountService {
 
         userDao.save(user);
 
+    }
+
+    @Override
+    public User queryUserByUsername(String username) {
+
+
+        return userDao.queryUserByName(username);
+    }
+
+    @Override
+    public Set<String> queryUserRoles(String username) {
+
+        Set<String> roles=userDao.queryUserRoles(username);
+
+
+        return userDao.queryUserRoles(username);
+    }
+
+    @Override
+    public Set<String> queryUserPermissions(String username) {
+        return userDao.queryUserPermissions( username);
     }
 }

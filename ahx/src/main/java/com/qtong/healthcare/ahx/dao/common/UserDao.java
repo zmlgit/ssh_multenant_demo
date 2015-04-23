@@ -5,6 +5,7 @@ import com.qtong.healthcare.ahx.model.User;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by ZML on 2015/4/16.
@@ -19,4 +20,9 @@ public interface UserDao extends IBaseDao{
 
     void saveUser(User user);
 
+    User  queryUserByName(String username);
+
+    Set<String> queryUserRoles(String username);
+
+    Set<String> queryUserPermissions(String username);
 }
