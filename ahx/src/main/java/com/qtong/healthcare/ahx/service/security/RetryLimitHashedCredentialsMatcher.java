@@ -1,6 +1,5 @@
 package com.qtong.healthcare.ahx.service.security;
 
-import com.sun.beans.util.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
 import org.apache.shiro.authc.AuthenticationInfo;
