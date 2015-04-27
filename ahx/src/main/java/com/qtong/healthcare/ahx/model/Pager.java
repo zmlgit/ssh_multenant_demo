@@ -20,7 +20,7 @@ public class Pager<T> {
     private List<T> list;
 
 
-    public Pager(int startIndex, long totalCount, int pageSize, List<T> list) {
+    public Pager(int startIndex, long totalCount, int pageSize, List<?> list) {
 
         Assert.isTrue(pageSize >= 1, "PageSize should bigger than 0");
 
@@ -38,7 +38,6 @@ public class Pager<T> {
 
     public static int getStartOfPage(int pageNo, int pageSize) {
 
-        int currentPage=pageNo>0?pageNo:1;
 
         return (pageNo-1)*pageSize+1;
     }

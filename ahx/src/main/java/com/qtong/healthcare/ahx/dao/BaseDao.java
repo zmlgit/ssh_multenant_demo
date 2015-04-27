@@ -1,7 +1,7 @@
 package com.qtong.healthcare.ahx.dao;
 
 import com.qtong.healthcare.ahx.model.Pager;
-import com.sun.java.util.jar.pack.*;
+
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -12,10 +12,9 @@ import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
+
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.List;
 
@@ -34,29 +33,6 @@ public class BaseDao {
     protected static final Logger LOGGER = Logger.getLogger(BaseDao.class);
 
 
-
-
-// 泛型反射类
-
-    //private Class<T> entityClass;
-
-
-// 通过反射获取子类确定的泛型类
-
-    @SuppressWarnings({"rawtypes", "unchecked"})
-
-//    public BaseDao() {
-//
-//
-//        Type genType = getClass().getGenericSuperclass();
-//
-//
-//        Type[] params = ((ParameterizedType) genType).getActualTypeArguments();
-//
-//
-//        entityClass = (Class) params[0];
-//
-//    }
 
 
 /*
@@ -78,7 +54,8 @@ public class BaseDao {
 
 
 
-    private SessionFactory sessionFactory;
+    @SuppressWarnings("unused")
+	private SessionFactory sessionFactory;
     @Resource
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
@@ -89,8 +66,6 @@ public class BaseDao {
  * 保存PO
 
 */
-
-    @SuppressWarnings("unchecked")
 
     public Serializable save(Object entity) {
 
@@ -148,7 +123,7 @@ public class BaseDao {
 
 */
 
-    public void delete(Class clazz,Serializable id) {
+    public void delete(Class<?> clazz,Serializable id) {
 
 
         hibernateTemplate.delete(this.get(clazz,id));
@@ -156,7 +131,7 @@ public class BaseDao {
 
     }
 
-    public Object get(Class clazz, Serializable id) {
+    public Object get(Class<?> clazz, Serializable id) {
         return hibernateTemplate.get(clazz,id);
     }
 
@@ -181,7 +156,7 @@ public class BaseDao {
 
 */
 
-    public boolean exists(Class clazz, Serializable id) {
+    public boolean exists(Class<?> clazz, Serializable id) {
 
 
         return get(clazz,id) != null;
@@ -195,9 +170,7 @@ public class BaseDao {
 
 */
 
-    @SuppressWarnings("unchecked")
-
-    public Object load(Class clazz, Serializable id) {
+    public Object load(Class<?> clazz, Serializable id) {
 
 
         return hibernateTemplate.load(clazz, id);
@@ -213,7 +186,7 @@ public class BaseDao {
 
 */
 
-    public int countAll(Class clazz) {
+    public int countAll(Class<? extends Object> clazz) {
 
 
        Criteria criteria=createCriteria(clazz);
@@ -270,8 +243,6 @@ public class BaseDao {
 
 */
 
-    @SuppressWarnings("unchecked")
-
     public List<?> list(Criteria criteria) {
 
 
@@ -286,7 +257,7 @@ public class BaseDao {
 
 */
 
-    @SuppressWarnings({"unchecked", "hiding"})
+    @SuppressWarnings({"unchecked"})
 
     public <T> List<T> list(DetachedCriteria criteria) {
 
@@ -314,9 +285,7 @@ public class BaseDao {
 
 */
 
-    @SuppressWarnings("unchecked")
-
-    public List<?> list(Class clazz, String orderBy, boolean isAsc) {
+    public List<?> list(Class<? extends Object> clazz, String orderBy, boolean isAsc) {
 
 
         Criteria criteria = createCriteria(clazz);
@@ -360,7 +329,7 @@ public class BaseDao {
 
 */
 
-    public List<?> list(Class clazz,String propertyName, Object value) {
+    public List<?> list(Class<? extends Object> clazz,String propertyName, Object value) {
 
         Criteria criteria=createCriteria(clazz);
 
@@ -381,9 +350,8 @@ public class BaseDao {
 
 */
 
-    @SuppressWarnings("unchecked")
-
-    private List<?> list(Class clazz,Criterion criterion) {
+    @SuppressWarnings("unused")
+	private List<?> list(Class<? extends Object> clazz,Criterion criterion) {
 
 
         Criteria criteria = createCriteria(clazz);
@@ -415,9 +383,7 @@ public class BaseDao {
 
 */
 
-    @SuppressWarnings("unchecked")
-
-    public List<?> list(Class clazz,Criterion... criterions) {
+    public List<?> list(Class<? extends Object> clazz,Criterion... criterions) {
 
 
         return createCriteria(clazz,criterions).list();
@@ -443,9 +409,7 @@ public class BaseDao {
 
 */
 
-    @SuppressWarnings("unchecked")
-
-    public Object uniqueResult(Class clazz,String propertyName, Object value) {
+    public Object uniqueResult(Class<? extends Object> clazz,String propertyName, Object value) {
 
 
         Criterion criterion = Restrictions.eq(propertyName, value);
@@ -474,7 +438,7 @@ public class BaseDao {
 
 */
 
-    public Object uniqueResult(Class clazz, Criterion... criterions) {
+    public Object uniqueResult(Class<? extends Object> clazz, Criterion... criterions) {
 
 
         Criteria criteria = createCriteria(clazz,criterions);
@@ -498,8 +462,6 @@ public class BaseDao {
  * @return
 
 */
-
-    @SuppressWarnings("unchecked")
 
     public Object uniqueResult(Criteria criteria) {
 
@@ -573,7 +535,7 @@ public class BaseDao {
 
 */
 
-    public Criteria createCriteria(Class entityClass) {
+    public Criteria createCriteria(Class<? extends Object> entityClass) {
 
 
         return getSession().createCriteria(entityClass);
@@ -591,7 +553,7 @@ public class BaseDao {
 
 */
 
-    public Criteria createCriteria(Class clazz, Criterion... criterions) {
+    public Criteria createCriteria(Class<? extends Object> clazz, Criterion... criterions) {
 
 
         Criteria criteria = createCriteria(clazz);
@@ -695,7 +657,7 @@ public class BaseDao {
         if (totalCount < 1) {
 
 
-            return new Pager();
+            return new Pager<Object>();
 
 
         }
@@ -707,7 +669,7 @@ public class BaseDao {
         int startIndex = Pager.getStartOfPage(pageNo, pageSize);
 
 
-        return new Pager(startIndex, totalCount, pageSize, list);
+        return new Pager<Object>(startIndex, totalCount, pageSize, list);
 
     }
 
@@ -716,7 +678,7 @@ public class BaseDao {
 
         Criteria criteria= createCriteria(entity.getClass());
 
-        Class clazz=entity.getClass();
+        Class<? extends Object> clazz=entity.getClass();
 
 
 

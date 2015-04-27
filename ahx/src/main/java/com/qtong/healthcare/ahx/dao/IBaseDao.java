@@ -28,7 +28,7 @@ public interface IBaseDao {
 
     public List<?> list(Criteria criteria);
 
-    public Object get(Class clazz, Serializable id);
+    public Object get(Class<?> clazz, Serializable id);
 
     public List<?> list(Object entity,String...propertyNames);
 
