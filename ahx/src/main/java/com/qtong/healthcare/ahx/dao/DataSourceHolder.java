@@ -1,9 +1,5 @@
 package com.qtong.healthcare.ahx.dao;
 
-import javax.sql.DataSource;
-import java.util.Map;
-import java.util.Objects;
-
 /**
  * Created by ZML on 2015/4/16.
  */

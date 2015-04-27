@@ -10,7 +10,15 @@ import java.io.Serializable;
 @Table(name = "t_region")
 public class Region implements Serializable {
 
-    private int regionId;
+    /**  
+	* serialVersionUID:TODO（用一句话描述这个变量表示什么）  
+	*  
+	* @since Ver 1.1  
+	*/  
+	
+	private static final long serialVersionUID = -6164905636842443168L;
+
+	private int regionId;
 
     private String name;
 

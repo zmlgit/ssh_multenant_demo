@@ -15,7 +15,15 @@ import javax.persistence.*;
 @Table(name = "t_user")
 @Cacheable(value = true)
 public class  User implements Serializable {
-    private int userId;
+    /**  
+	* serialVersionUID:TODO（用一句话描述这个变量表示什么）  
+	*  
+	* @since Ver 1.1  
+	*/  
+	
+	private static final long serialVersionUID = -823891280956081880L;
+
+	private int userId;
 
     private String username;
 

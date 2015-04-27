@@ -55,7 +55,7 @@ public class SecurityRealm extends AuthorizingRealm{
         if (user.isLocked()){
             throw new LockedAccountException();
         }
-        String password = String.valueOf(user.getPassword());
+        String.valueOf(user.getPassword());
 
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
                 user.getUsername(), //用户名

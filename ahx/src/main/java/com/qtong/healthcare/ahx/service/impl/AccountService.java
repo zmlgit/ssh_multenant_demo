@@ -25,7 +25,7 @@ public class AccountService implements IAccountService {
 
     public void saveUser(User user){
 
-     User user1=   EndecryptUtils.md5Password(user);
+     EndecryptUtils.md5Password(user);
 
         userDao.save(user);
 
@@ -41,7 +41,7 @@ public class AccountService implements IAccountService {
     @Override
     public Set<String> queryUserRoles(String username) {
 
-        Set<String> roles=userDao.queryUserRoles(username);
+        userDao.queryUserRoles(username);
 
 
         return userDao.queryUserRoles(username);

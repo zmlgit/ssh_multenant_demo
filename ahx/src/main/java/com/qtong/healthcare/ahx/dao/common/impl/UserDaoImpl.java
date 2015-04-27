@@ -5,6 +5,7 @@ import com.qtong.healthcare.ahx.dao.BaseDao;
 import com.qtong.healthcare.ahx.dao.common.UserDao;
 import com.qtong.healthcare.ahx.model.Role;
 import com.qtong.healthcare.ahx.model.User;
+
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -18,6 +19,7 @@ import java.util.Set;
 @Repository
 public class UserDaoImpl extends BaseDao implements UserDao {
 
+	@SuppressWarnings("unchecked")
 	public List<User> queryUser(String username, String password) {
 
 		return getSession()

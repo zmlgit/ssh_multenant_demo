@@ -1,7 +1,5 @@
 package com.qtong.healthcare.ahx.model;
 
-import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -12,7 +10,15 @@ import java.io.Serializable;
 @Table(name="t_aciton")
 public class Action implements Serializable {
 
-    private long actionId;
+    /**  
+	* serialVersionUID:TODO（用一句话描述这个变量表示什么）  
+	*  
+	* @since Ver 1.1  
+	*/  
+	
+	private static final long serialVersionUID = -3057817057434668193L;
+
+	private long actionId;
 
     private String path;
 
