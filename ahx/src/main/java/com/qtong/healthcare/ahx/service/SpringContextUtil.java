@@ -49,7 +49,7 @@ public class SpringContextUtil implements ApplicationContextAware {
         return applicationContext.getBean(name);
     }
 
-    public static Object getBean(Class clazz) throws BeansException{
+	public static Object getBean(Class<?> clazz) throws BeansException{
         return applicationContext.getBean(clazz);
     }
 
@@ -61,7 +61,7 @@ public class SpringContextUtil implements ApplicationContextAware {
      * @return Object 返回requiredType类型对象
      * @throws BeansException
      */
-    public static Object getBean(String name, Class requiredType)
+    public static Object getBean(String name, Class<?> requiredType)
             throws BeansException {
         return applicationContext.getBean(name, requiredType);
     }
@@ -92,7 +92,7 @@ public class SpringContextUtil implements ApplicationContextAware {
      * @return Class 注册对象的类型
      * @throws NoSuchBeanDefinitionException
      */
-    public static Class getType(String name)
+    public static Class<?> getType(String name)
             throws NoSuchBeanDefinitionException {
         return applicationContext.getType(name);
     }
