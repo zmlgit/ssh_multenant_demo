@@ -2,7 +2,6 @@ package com.qtong.healthcare.ahx.dao;
 
 import org.apache.log4j.Logger;
 import org.hibernate.cfg.Environment;
-
 import org.hibernate.engine.config.spi.ConfigurationService;
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.hibernate.engine.jdbc.connections.spi.MultiTenantConnectionProvider;
@@ -11,6 +10,7 @@ import org.hibernate.service.spi.ServiceRegistryAwareService;
 import org.hibernate.service.spi.ServiceRegistryImplementor;
 
 import javax.sql.DataSource;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -20,7 +20,15 @@ import java.sql.SQLException;
 public class SchemaBasedMultiTenantConnectionProvider implements MultiTenantConnectionProvider,ServiceRegistryAwareService {
 
 
-    private Logger logger=Logger.getLogger(SchemaBasedMultiTenantConnectionProvider.class);
+    /**  
+	* serialVersionUID:TODO（用一句话描述这个变量表示什么）  
+	*  
+	* @since Ver 1.1  
+	*/  
+	
+	private static final long serialVersionUID = 5643321513633149830L;
+
+	private Logger logger=Logger.getLogger(SchemaBasedMultiTenantConnectionProvider.class);
 
     private DataSource dataSource;
 
@@ -72,11 +80,12 @@ public class SchemaBasedMultiTenantConnectionProvider implements MultiTenantConn
     }
 
     @Override
-    public boolean isUnwrappableAs(Class unwrapType) {
+    public boolean isUnwrappableAs(@SuppressWarnings("rawtypes") Class unwrapType) {
         return ConnectionProvider.class.equals(unwrapType) || MultiTenantConnectionProvider.class.equals(unwrapType) || SchemaBasedMultiTenantConnectionProvider.class.isAssignableFrom(unwrapType);
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public <T> T unwrap(Class<T> unwrapType) {
         if (isUnwrappableAs(unwrapType)) {
             return (T) this;
@@ -87,7 +96,8 @@ public class SchemaBasedMultiTenantConnectionProvider implements MultiTenantConn
 
     @Override
     public void injectServices(ServiceRegistryImplementor serviceRegistry) {
-        java.util.Map lSettings = serviceRegistry.getService(ConfigurationService.class).getSettings();
+        @SuppressWarnings("rawtypes")
+		java.util.Map lSettings = serviceRegistry.getService(ConfigurationService.class).getSettings();
 
         dataSource = (DataSource) lSettings.get( Environment.DATASOURCE );
     }
