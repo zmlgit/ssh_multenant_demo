@@ -7,10 +7,10 @@
 
     <display-name>和健康·爱护心</display-name>
 
-<!-- 	<welcome-file-list>
+ 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
-    spring 的入口文件
+    <!-- spring 的入口文件 -->
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>classpath:applicationContext.xml
@@ -18,8 +18,8 @@
         </param-value>
     </context-param>
 
-
-    JavaMelody 性能监控
+<!-- 
+    JavaMelody 性能监控 -->
     <filter>
         <filter-name>monitoring</filter-name>
         <filter-class>net.bull.javamelody.MonitoringFilter</filter-class>
@@ -29,7 +29,7 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-    解决输出乱码问题
+<!--     解决输出乱码问题 -->
     <filter>
         <filter-name>encodingFilter</filter-name>
         <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
@@ -48,7 +48,7 @@
     </filter-mapping>
 
 
-    spring 监听器
+  <!--   spring 监听器 -->
     <listener>
         <listener-class>net.bull.javamelody.SessionListener</listener-class>
     </listener>
@@ -57,10 +57,10 @@
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
 
-配置Shiro过滤器,先让Shiro过滤系统接收到的请求
+<!-- 配置Shiro过滤器,先让Shiro过滤系统接收到的请求
   这里filter-name必须对应applicationContext.xml中定义的<bean id="shiroFilter"/>
   使用[/*]匹配所有请求,保证所有的可控请求都经过Shiro的过滤
-  通常会将此filter-mapping放置到最前面(即其他filter-mapping前面),以保证它是过滤器链中第一个起作用的
+  通常会将此filter-mapping放置到最前面(即其他filter-mapping前面),以保证它是过滤器链中第一个起作用的 -->
   <filter>
     <filter-name>shiroFilter</filter-name>
     <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
@@ -74,7 +74,7 @@
     <url-pattern>/*</url-pattern>
   </filter-mapping>
 
-  SpringMVC核心分发器
+<!--   SpringMVC核心分发器 -->
   <servlet>
     <servlet-name>SpringMVC</servlet-name>
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -87,7 +87,7 @@
   <servlet-mapping>
     <servlet-name>SpringMVC</servlet-name>
     <url-pattern>/</url-pattern>
-  </servlet-mapping> -->
+  </servlet-mapping>
 
   <!-- 默认欢迎页 -->
   <!-- Servlet2.5中可直接在此处执行Servlet应用,如<welcome-file>servlet/InitSystemParamServlet</welcome-file> -->
