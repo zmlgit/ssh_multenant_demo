@@ -31,13 +31,19 @@
 			<version>4.10</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<!--Java EE的相关Jar包，防止IDE标记编译错误 -->
+		<!-- <dependency> <groupId>javaee</groupId> <artifactId>javaee-api</artifactId> 
+			<version>5</version> <scope>provided</scope> </dependency> -->
+
+		<!-- <dependency> <groupId>javax</groupId> <artifactId>javaee-api</artifactId> 
+			<scope>provided</scope> <version>6.0</version> </dependency> -->
+
 		<dependency>
-			<groupId>javaee</groupId>
-			<artifactId>javaee-api</artifactId>
-			<version>5</version>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
 			<scope>provided</scope>
+			<version>2.5</version>
 		</dependency>
 
 		<dependency>
