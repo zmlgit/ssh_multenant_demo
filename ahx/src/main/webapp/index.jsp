@@ -13,5 +13,7 @@
 	    <p>
 	<%=session.getId() %>
 	</p>
+	
+	<% System.out.println("--------------------------------"); %>
 </body>
 </html>
