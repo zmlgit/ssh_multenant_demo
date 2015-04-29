@@ -117,5 +117,7 @@
     <location>/WEB-INF/error.html</location>
   </error-page>
  -->
+ <!--允许session共享  -->
+ <distributable/>
 </web-app>
 
