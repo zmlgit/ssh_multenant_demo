@@ -7,7 +7,9 @@
 
     <display-name>和健康·爱护心</display-name>
 
-
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
     <!--spring 的入口文件-->
     <context-param>
         <param-name>contextConfigLocation</param-name>
