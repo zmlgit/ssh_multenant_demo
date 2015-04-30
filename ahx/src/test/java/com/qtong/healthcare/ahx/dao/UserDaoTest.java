@@ -1,16 +1,18 @@
 package com.qtong.healthcare.ahx.dao;
 
-import com.qtong.healthcare.ahx.dao.common.UserDao;
-import com.qtong.healthcare.ahx.model.*;
-import com.qtong.healthcare.ahx.service.IAccountService;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import javax.sql.DataSource;
-import java.util.HashSet;
-import java.util.Set;
+import com.qtong.healthcare.ahx.dao.common.UserDao;
+import com.qtong.healthcare.ahx.model.Action;
+import com.qtong.healthcare.ahx.model.Role;
+import com.qtong.healthcare.ahx.model.User;
+import com.qtong.healthcare.ahx.service.IAccountService;
 
 /**
  * Created by ZML on 2015/4/16.
@@ -61,11 +63,5 @@ public class UserDaoTest {
     }
 
 
-    private void update(){
-        UserDao userDao=context.getBean(UserDao.class);
-        User user=new User();
-        user.setUsername("admin1");
-        user.setPassword("admin");
-       userDao.save(user);
-    }
+ 
 }

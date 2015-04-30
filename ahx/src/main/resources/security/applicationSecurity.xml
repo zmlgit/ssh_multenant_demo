@@ -97,15 +97,17 @@
         </property>
         <property name="filterChainDefinitions">
             <value>
-                /weblib/**=anon
+                /media/**=anon
                 /init=anon
                 /images/** =anon
                 /login.jsp=anon
-                /js/* =anon
+                /js/** =anon
                 /login=anon
                 /style/*=anon
                 /logout =anon
+                /druid/**=anon
                 /** =authc
+                /css/**=anon
             </value>
         </property>
     </bean>

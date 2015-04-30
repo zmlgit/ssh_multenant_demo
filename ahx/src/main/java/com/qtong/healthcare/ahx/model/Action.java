@@ -20,7 +20,19 @@ public class Action implements Serializable {
 
 	private long actionId;
 
-    private String path;
+	private String name;
+	
+	private String remark;//备注
+	
+    public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	private String path;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,7 +61,15 @@ public class Action implements Serializable {
     public Action() {
     }
 
-    public Action(String path) {
+    public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
+	public Action(String path) {
         this.path = path;
     }
 }

@@ -115,7 +115,7 @@ public class  User implements Serializable {
     }
 
 
-    @OneToMany(targetEntity = Role.class,cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @ManyToMany(targetEntity = Role.class,cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinTable(name = "t_user_role",joinColumns = @JoinColumn(name = "roleId"),inverseJoinColumns = @JoinColumn(name = "userId"))
     public Set<Role> getRoles() {
         return roles;

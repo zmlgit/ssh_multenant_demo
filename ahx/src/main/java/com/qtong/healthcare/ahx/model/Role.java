@@ -28,7 +28,7 @@ public class Role implements Serializable {
 
     private Set<Action> actions;
 
-    private Set<User> users;
+ //   private Set<User> users;
 
     @Id
     @GeneratedValue(generator = "paymentableGenerator")
@@ -56,7 +56,7 @@ public class Role implements Serializable {
                 ", roleName='" + roleName + '\'' +
                 '}';
     }
-    @OneToMany(targetEntity = Action.class,cascade = CascadeType.ALL)
+    @ManyToMany(targetEntity = Action.class,cascade = CascadeType.ALL)
     @JoinTable(name = "t_role_action",joinColumns = @JoinColumn(name="actionId"),inverseJoinColumns = @JoinColumn(name = "roleId"))
     public Set<Action> getActions() {
         return actions;
@@ -65,14 +65,14 @@ public class Role implements Serializable {
     public void setActions(Set<Action> actions) {
         this.actions = actions;
     }
-
-    @OneToMany(targetEntity = User.class)
-    @JoinTable(name = "t_user_role", joinColumns = @JoinColumn(name = "userId"), inverseJoinColumns = @JoinColumn(name = "roleId"))
-    public Set<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Set<User> users) {
-        this.users = users;
-    }
+//
+//    @ManyToMany(targetEntity = User.class)
+//    @JoinTable(name = "t_user_role", joinColumns = @JoinColumn(name = "userId"), inverseJoinColumns = @JoinColumn(name = "roleId"))
+//    public Set<User> getUsers() {
+//        return users;
+//    }
+//
+//    public void setUsers(Set<User> users) {
+//        this.users = users;
+//    }
 }

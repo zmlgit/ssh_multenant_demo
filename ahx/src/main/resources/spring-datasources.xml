@@ -1,71 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <!--使用C3P0，在此bean中配置公共部分-->
-    <bean id="commonDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" >
-        <!-- 连接关闭时默认将所有未提交的操作回滚。默认为false -->
-        <property name="autoCommitOnClose" value="true"/>
-        <!-- 连接池中保留的最小连接数 -->
-        <property name="minPoolSize" value="2"/>
-        <!-- 	连接池中保留的最大连接数。默认为15 -->
-        <property name="maxPoolSize" value="15"/>
-        <!-- 初始化时获取的连接数，取值应在minPoolSize与maxPoolSize之间。默认为3 -->
-        <property name="initialPoolSize" value="3"/>
-        <!-- 最大空闲时间，超过空闲时间的连接将被丢弃。为0或负数则永不丢弃。默认为0秒 -->
-        <property name="maxIdleTime" value="20"/>
-        <!-- 当连接池中的连接用完时，C3P0一次性创建新连接的数目。默认为3 -->
-        <property name="acquireIncrement" value="3"/>
-        <!-- 定义在从数据库获取新连接失败后重复尝试获取的次数，默认为30 -->
-        <property name="acquireRetryAttempts" value="3"/>
-        <!-- 当连接池用完时客户端调用getConnection()后等待获取新连接的时间，超时后将抛出SQLException，如设为0则无限期等待。单位毫秒，默认为0 -->
-        <property name="checkoutTimeout" value="1000"/>
+	<!--使用C3P0，在此bean中配置公共部分 -->
+<!-- 	<bean id="commonDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		连接关闭时默认将所有未提交的操作回滚。默认为false
+		<property name="autoCommitOnClose" value="true" />
+		连接池中保留的最小连接数
+		<property name="minPoolSize" value="2" />
+		连接池中保留的最大连接数。默认为15
+		<property name="maxPoolSize" value="15" />
+		初始化时获取的连接数，取值应在minPoolSize与maxPoolSize之间。默认为3
+		<property name="initialPoolSize" value="3" />
+		最大空闲时间，超过空闲时间的连接将被丢弃。为0或负数则永不丢弃。默认为0秒
+		<property name="maxIdleTime" value="20" />
+		当连接池中的连接用完时，C3P0一次性创建新连接的数目。默认为3
+		<property name="acquireIncrement" value="3" />
+		定义在从数据库获取新连接失败后重复尝试获取的次数，默认为30
+		<property name="acquireRetryAttempts" value="3" />
+		当连接池用完时客户端调用getConnection()后等待获取新连接的时间，超时后将抛出SQLException，如设为0则无限期等待。单位毫秒，默认为0
+		<property name="checkoutTimeout" value="1000" />
 
 
-    </bean>
+	</bean>
+ -->
 
-    <!--开发用的数据库-->
-    <bean id="dataSource1" parent="commonDataSource">
+	<bean id="baseDataSource" class="com.alibaba.druid.pool.DruidDataSource">
+		<!--连接自动提交，因为有会话管理器，所以用自动提交 -->
+		<property name="defaultAutoCommit" value="false" />
+		<!-- 最大连接池数量 -->
+		<property name="maxActive" value="8" />
 
-        <property name="jdbcUrl">
-            <value>${ahx.datasource.jdbcurl.programer}</value>
-        </property>
-        <property name="driverClass">
-            <value>${ahx.datasource.drivername.programer}</value>
-        </property>
-        <property name="password">
-            <value>${ahx.datasource.password.programer}</value>
-        </property>
-        <property name="user">
-            <value>${ahx.datasource.username.programer}</value>
-        </property>
+		<!--是否缓存preparedStatement，也就是PSCache。 PSCache对支持游标的数据库性能提升巨大，比如说oracle。 
+			在mysql5.5以下的版本中没有PSCache功能，建议关闭掉。 作者在5.5版本中使用PSCache，通过监控界面发现PSCache有缓存命中率记录， 
+			该应该是支持PSCache。 -->
 
-    </bean>
+		<property name="poolPreparedStatements" value="true"></property>
 
-    <bean id="dataSource2" parent="commonDataSource">
-        <property name="jdbcUrl">
-            <value>${ahx.datasource.jdbcurl.test}</value>
-        </property>
-        <property name="driverClass">
-            <value>${ahx.datasource.drivername.test}</value>
-        </property>
-        <property name="password">
-            <value>${ahx.datasource.password.test}</value>
-        </property>
-        <property name="user">
-            <value>${ahx.datasource.username.test}</value>
-        </property>
-    </bean>
+		<!-- 要启用PSCache，必须配置大于0，当大于0时， poolPreparedStatements自动触发修改为true。 在Druid中，不会存在Oracle下PSCache占用内存过多的问题， 
+			可以把这个数值配置大一些，比如说100 -->
+		<property name="maxOpenPreparedStatements" value="100" />
+		<!-- 属性类型是字符串，通过别名的方式配置扩展插件， 常用的插件有： 监控统计用的filter:stat 日志用的filter:log4j 
+			防御sql注入的filter:wall -->
+		<property name="filters" value="log4j,stat,wall" />
 
-    <!--在此动态调用数据源-->
-    <bean id="dataSource" class="com.qtong.healthcare.ahx.dao.DynamicDataSource" >
-        <property name="targetDataSources">
-            <map key-type="java.lang.String">
-                <entry key="programmerDb" value-ref="dataSource1"></entry>
-                <entry key="testDb" value-ref="dataSource2"></entry>
-            </map>
-        </property>
-        <property name="defaultTargetDataSource" ref="dataSource1"></property>
-    </bean>
+	</bean>
+
+	<!--开发用的数据库 -->
+	<bean id="dataSource1" parent="baseDataSource">
+
+		<property name="url">
+			<value>${ahx.datasource.jdbcurl.programer}</value>
+		</property>
+		<property name="driverClassName">
+			<value>${ahx.datasource.drivername.programer}</value>
+		</property>
+		<property name="password">
+			<value>${ahx.datasource.password.programer}</value>
+		</property>
+		<property name="username">
+			<value>${ahx.datasource.username.programer}</value>
+		</property>
+
+	</bean>
+
+	<bean id="dataSource2" parent="baseDataSource">
+		<property name="url">
+			<value>${ahx.datasource.jdbcurl.test}</value>
+		</property>
+		<property name="driverClassName">
+			<value>${ahx.datasource.drivername.test}</value>
+		</property>
+		<property name="password">
+			<value>${ahx.datasource.password.test}</value>
+		</property>
+		<property name="username">
+			<value>${ahx.datasource.username.test}</value>
+		</property>
+	</bean>
+
+	<!--在此动态调用数据源 -->
+	<bean id="dataSource" class="com.qtong.healthcare.ahx.dao.DynamicDataSource">
+		<property name="targetDataSources">
+			<map key-type="java.lang.String">
+				<entry key="programmerDb" value-ref="dataSource1"></entry>
+				<entry key="testDb" value-ref="dataSource2"></entry>
+			</map>
+		</property>
+		<property name="defaultTargetDataSource" ref="dataSource1"></property>
+	</bean>
 </beans>

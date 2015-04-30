@@ -1,6 +1,5 @@
 package com.qtong.healthcare.ahx.service.advisor;
 
-import org.apache.shiro.SecurityUtils;
 import org.springframework.aop.MethodBeforeAdvice;
 
 import java.lang.reflect.Method;

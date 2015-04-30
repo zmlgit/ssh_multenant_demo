@@ -96,22 +96,19 @@
 		<level class="org.apache.log4j.Level" value="debug" />
 		<appender-ref ref="workinfofile" />
 		<appender-ref ref="stdout" />
-		<appender-ref ref="debugfile"/>
+		<appender-ref ref="debugfile" />
 		<!--<appender-ref ref="workinfodb"/> -->
 		<!-- <appender-ref ref="errordb"/> -->
 	</logger>
 	<logger name="com.mchange.v2" additivity="false">
-	<level class="org.apache.log4j.Level" value="WARN" />
-	</logger>
-<!-- 	<logger name="org.apache.struts2" additivity="false">
-		<level class="org.apache.log4j.Level" value="info" />
-		<appender-ref ref="infofile" />
-		<appender-ref ref="errorfile" />
-		<appender-ref ref="debugfile" />
-		<appender-ref ref="warnfile" />
+		<level class="org.apache.log4j.Level" value="WARN" />
 		<appender-ref ref="stdout" />
-		<appender-ref ref="errordb"/>
-	</logger> -->
+	</logger>
+
+	<!-- <logger name="org.apache.struts2" additivity="false"> <level class="org.apache.log4j.Level" 
+		value="info" /> <appender-ref ref="infofile" /> <appender-ref ref="errorfile" 
+		/> <appender-ref ref="debugfile" /> <appender-ref ref="warnfile" /> <appender-ref 
+		ref="stdout" /> <appender-ref ref="errordb"/> </logger> -->
 	<!-- <logger name="com.opensymphony.xwork2" additivity="false"> <level class="org.apache.log4j.Level" 
 		value="WARN"/> <appender-ref ref="infofile"/> <appender-ref ref="errorfile"/> 
 		<appender-ref ref="debugfile"/> <appender-ref ref="warnfile"/> <appender-ref 

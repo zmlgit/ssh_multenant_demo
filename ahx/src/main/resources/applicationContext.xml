@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:aop="http://www.springframework.org/schema/aop"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
         http://www.springframework.org/schema/aop
         http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
@@ -12,117 +11,117 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
-    <!--允许spring读取properties配置文件-->
-    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="locations">
-            <list>
-                <value>classpath*:datasource.properties</value>
-            </list>
-        </property>
-    </bean>
+	<!--允许spring读取properties配置文件 -->
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath*:datasource.properties</value>
+			</list>
+		</property>
+	</bean>
 
-    <import resource="spring-datasources.xml"/>
-    <!--启用spring的注解功能-->
-    <context:annotation-config/>
+	<import resource="spring-datasources.xml" />
+	<!--启用spring的注解功能 -->
+	<context:annotation-config />
 
-    <!-- 使用Annotation自动注册Bean，解决事物失效问题：在主容器中不扫描@Controller注解，在SpringMvc中只扫描@Controller注解。  -->
-    <context:component-scan base-package="com.qtong.healthcare"><!-- base-package 如果多个，用“,”分隔 -->
-        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
-    </context:component-scan>
-
-
-    <!--通过配置织入@Aspectj切面
-
-        虽然可以通过编程的方式织入切面，但是一般情况下，我们还是使用spring的配置自动完成创建代理织入切面的工作。
-
-        通过aop命名空间的<aop:aspectj-autoproxy/>
-
-        声明自动为spring容器中那些配置@aspectJ切面的bean创建代理，织入切面。当然，spring在内部依旧采用
-
-        AnnotationAwareAspectJAutoProxyCreator进行自动代理的创建工作，
-        但具体实现的细节已经被<aop:aspectj-autoproxy/>
-        隐藏起来了<aop:aspectj-autoproxy />有一个proxy-target-class属性，默认为false，
-        表示使用jdk动态代理织入增强，当配为<aop:aspectj-autoproxy
-        poxy-target-class="true"/>时，表示使用CGLib动态代理技术织入增强。
-        不过即使proxy-target-class设置为false，如果目标类没有声明接口，则spring将自动使用CGLib动态代理。
-    -->
-  <!--<aop:aspectj-autoproxy proxy-target-class="true"/>-->
+	<!-- 使用Annotation自动注册Bean，解决事物失效问题：在主容器中不扫描@Controller注解，在SpringMvc中只扫描@Controller注解。 -->
+	<context:component-scan base-package="com.qtong.healthcare"><!-- base-package 
+			如果多个，用“,”分隔 -->
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
 
 
-    <!--缓存管理，使用的是EHCACHE-->
-    <bean id="ehCacheManager"
-          class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
-        <property name="configLocation" value="classpath:ehcache.xml"/>
-        <property name="shared" value="true"/>
-    </bean>
-    <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager" >
-        <property name="cacheManager" ref="ehCacheManager"/>
-    </bean>
+	<!--通过配置织入@Aspectj切面 虽然可以通过编程的方式织入切面，但是一般情况下，我们还是使用spring的配置自动完成创建代理织入切面的工作。 
+		通过aop命名空间的<aop:aspectj-autoproxy/> 声明自动为spring容器中那些配置@aspectJ切面的bean创建代理，织入切面。当然，spring在内部依旧采用 
+		AnnotationAwareAspectJAutoProxyCreator进行自动代理的创建工作， 但具体实现的细节已经被<aop:aspectj-autoproxy/> 
+		隐藏起来了<aop:aspectj-autoproxy />有一个proxy-target-class属性，默认为false， 表示使用jdk动态代理织入增强，当配为<aop:aspectj-autoproxy 
+		poxy-target-class="true"/>时，表示使用CGLib动态代理技术织入增强。 不过即使proxy-target-class设置为false，如果目标类没有声明接口，则spring将自动使用CGLib动态代理。 -->
+	<!--<aop:aspectj-autoproxy proxy-target-class="true"/> -->
 
 
-    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean" lazy-init="true">
-        <property name="packagesToScan" value="com.qtong.**.model"/>
-        <property name="dataSource" ref="dataSource"/>
-        <property name="hibernateProperties">
-
-            <map>
-                <entry key="hibernate.cache.provider_class" value="org.hibernate.cache.ehcache.EhCacheRegionFactory"/>
-                <entry key="hibernate.cache.region.factory_class"
-                       value="org.hibernate.cache.SingletonEhCacheRegionFactory"/>
-                <entry key="hibernate.cache.use_second_level_cache"
-                       value="${ahx.hibernate.cache.use_second_level_cache}"/>
-                <entry key="hibernate.cache.use_query_cache" value="${ahx.hibernate.cache.use_query_cache}"/>
-                <entry key="hibernate.show_sql" value="${ahx.hibernate.show_sql}"></entry>
-                <entry key="hibernate.hbm2ddl.auto" value="${ahx.hibernate.hbm2ddl.auto}"/>
-                <entry key="hibernate.format_sql" value="${ahx.hibernate.format_sql}"/>
-                <entry key="hibernate.dialect" value="${ahx.hibernate.dialect}"/>
-                <!--<entry key="hibernate.multiTenancy" value="DATABASE"/>-->
-                <!--<entry key="hibernate.tenant_identifier_resolver" value="com.qtong.healthcare.ahx.dao.TenantIdResolver"/>-->
-                <!--<entry key="hibernate.multi_tenant_connection_provider" value="com.qtong.healthcare.ahx.dao.SchemaBasedMultiTenantConnectionProvider"/>-->
-            </map>
-
-        </property>
-    </bean>
+	<!--缓存管理，使用的是EHCACHE -->
+	<bean id="ehCacheManager"
+		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+		<property name="configLocation" value="classpath:ehcache.xml" />
+		<property name="shared" value="true" />
+	</bean>
+	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+		<property name="cacheManager" ref="ehCacheManager" />
+	</bean>
 
 
-    <!--<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>-->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean"
+		lazy-init="true">
+		<property name="packagesToScan" value="com.qtong.**.model" />
+		<property name="dataSource" ref="dataSource" />
+		<property name="hibernateProperties">
 
-    <tx:advice transaction-manager="transactionManager" id="txadvice">
-        <tx:attributes>
-            <tx:method name="do*" propagation="REQUIRED" read-only="false"
-                       rollback-for="Exception"/>
-            <tx:method name="del*" propagation="REQUIRED" read-only="false"
-                       rollback-for="Exception"/>
-            <tx:method name="save*" propagation="REQUIRED" read-only="false"
-                       rollback-for="Exception"/>
-            <tx:method name="add*" propagation="REQUIRED" read-only="false"
-                       rollback-for="Exception"/>
-            <tx:method name="update*" propagation="REQUIRED" read-only="false"
-                       rollback-for="Exception"/>
-            <tx:method name="insert*" propagation="REQUIRED" read-only="false"
-                       rollback-for="Exception"/>
-            <tx:method name="create*" propagation="REQUIRED" read-only="false"
-                       rollback-for="Exception"/>
-            <tx:method name="get*" read-only="true"/>
-            <tx:method name="query*" read-only="true"/>
-            <tx:method name="select*" read-only="true"/>
-            <tx:method name="*" read-only="true"/>
-        </tx:attributes>
-    </tx:advice>
+			<map>
+				<entry key="hibernate.cache.provider_class" value="org.hibernate.cache.ehcache.EhCacheRegionFactory" />
+				<entry key="hibernate.cache.region.factory_class" value="org.hibernate.cache.SingletonEhCacheRegionFactory" />
+				<entry key="hibernate.cache.use_second_level_cache" value="${ahx.hibernate.cache.use_second_level_cache}" />
+				<entry key="hibernate.cache.use_query_cache" value="${ahx.hibernate.cache.use_query_cache}" />
+				<entry key="hibernate.show_sql" value="${ahx.hibernate.show_sql}"></entry>
+				<entry key="hibernate.hbm2ddl.auto" value="${ahx.hibernate.hbm2ddl.auto}" />
+				<entry key="hibernate.format_sql" value="${ahx.hibernate.format_sql}" />
+				<entry key="hibernate.dialect" value="${ahx.hibernate.dialect}" />
+				<!--<entry key="hibernate.multiTenancy" value="DATABASE"/> -->
+				<!--<entry key="hibernate.tenant_identifier_resolver" value="com.qtong.healthcare.ahx.dao.TenantIdResolver"/> -->
+				<!--<entry key="hibernate.multi_tenant_connection_provider" value="com.qtong.healthcare.ahx.dao.SchemaBasedMultiTenantConnectionProvider"/> -->
+			</map>
 
-    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
-        <property name="sessionFactory" ref="sessionFactory"/>
-        <property name="rollbackOnCommitFailure" value="true"/>
-    </bean>
+		</property>
+	</bean>
 
-    <bean id="hibernateTemplate" class="org.springframework.orm.hibernate4.HibernateTemplate">
-        <property name="sessionFactory" ref="sessionFactory"/>
-        <property name="cacheQueries" value="true"/>
-    </bean>
-    <aop:config proxy-target-class="true">
-        <aop:pointcut id="centerService"
-                      expression="execution(* com.qtong.healthcare..service..*(..))"/>
-        <aop:advisor pointcut-ref="centerService" advice-ref="txadvice"/>
-    </aop:config>
-    <import resource="classpath*:security/applicationSecurity.xml"/>
+
+	<!--<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/> -->
+
+	<tx:advice transaction-manager="transactionManager" id="txadvice">
+		<tx:attributes>
+			<tx:method name="do*" propagation="REQUIRED" read-only="false"
+				rollback-for="Exception" />
+			<tx:method name="del*" propagation="REQUIRED" read-only="false"
+				rollback-for="Exception" />
+			<tx:method name="save*" propagation="REQUIRED" read-only="false"
+				rollback-for="Exception" />
+			<tx:method name="add*" propagation="REQUIRED" read-only="false"
+				rollback-for="Exception" />
+			<tx:method name="update*" propagation="REQUIRED" read-only="false"
+				rollback-for="Exception" />
+			<tx:method name="insert*" propagation="REQUIRED" read-only="false"
+				rollback-for="Exception" />
+			<tx:method name="create*" propagation="REQUIRED" read-only="false"
+				rollback-for="Exception" />
+			<tx:method name="get*" read-only="true" />
+			<tx:method name="query*" read-only="true" />
+			<tx:method name="select*" read-only="true" />
+			<!-- <tx:method name="*" read-only="true"/> -->
+		</tx:attributes>
+	</tx:advice>
+
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="rollbackOnCommitFailure" value="true" />
+	</bean>
+
+	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate4.HibernateTemplate">
+		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="cacheQueries" value="true" />
+	</bean>
+	<aop:config proxy-target-class="true">
+		<aop:pointcut id="centerService"
+			expression="execution(* com.qtong.healthcare..service..*(..))" />
+		<aop:advisor pointcut-ref="centerService" advice-ref="txadvice" />
+		
+		<aop:advisor advice-ref="druid-stat-interceptor" pointcut-ref="centerService"/>
+	</aop:config>
+	<bean id="druid-stat-interceptor"
+		class="com.alibaba.druid.support.spring.stat.DruidStatInterceptor">
+	</bean>
+
+	<import resource="classpath*:security/applicationSecurity.xml" />
 </beans>

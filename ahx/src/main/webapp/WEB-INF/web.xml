@@ -1,125 +1,133 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app
-        version="3.0"
-        xmlns="http://java.sun.com/xml/ns/javaee"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
 
-    <display-name>和健康·爱护心</display-name>
+	<display-name>和健康·爱护心</display-name>
 
- 	<welcome-file-list>
+	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
-    <!-- spring 的入口文件 -->
-    <context-param>
-        <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:applicationContext.xml
-            classpath:net/bull/javamelody/monitoring-spring.xml
+	<!-- spring 的入口文件 -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:applicationContext.xml
         </param-value>
-    </context-param>
+	</context-param>
 
-<!-- 
-    JavaMelody 性能监控 -->
-    <filter>
-        <filter-name>monitoring</filter-name>
-        <filter-class>net.bull.javamelody.MonitoringFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>monitoring</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
+	<!-- JavaMelody 性能监控 -->
+<!-- 	<filter>
+		<filter-name>monitoring</filter-name>
+		<filter-class>net.bull.javamelody.MonitoringFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>monitoring</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping> -->
 
-<!--     解决输出乱码问题 -->
-    <filter>
-        <filter-name>encodingFilter</filter-name>
-        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
-        <init-param>
-            <param-name>encoding</param-name>
-            <param-value>UTF-8</param-value>
-        </init-param>
-        <init-param>
-            <param-name>forceEncoding</param-name>
-            <param-value>true</param-value>
-        </init-param>
-    </filter>
-    <filter-mapping>
-        <filter-name>encodingFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
+	<!-- 解决输出乱码问题 -->
+	<filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 
 
-  <!--   spring 监听器 -->
-    <listener>
-        <listener-class>net.bull.javamelody.SessionListener</listener-class>
-    </listener>
+	<!-- spring 监听器 -->
+	<listener>
+		<listener-class>net.bull.javamelody.SessionListener</listener-class>
+	</listener>
 
-    <listener>
-        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-    </listener>
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
 
-<!-- 配置Shiro过滤器,先让Shiro过滤系统接收到的请求
-  这里filter-name必须对应applicationContext.xml中定义的<bean id="shiroFilter"/>
-  使用[/*]匹配所有请求,保证所有的可控请求都经过Shiro的过滤
-  通常会将此filter-mapping放置到最前面(即其他filter-mapping前面),以保证它是过滤器链中第一个起作用的 -->
-  <filter>
-    <filter-name>shiroFilter</filter-name>
-    <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
-    <init-param>
-      <param-name>targetFilterLifecycle</param-name>
-      <param-value>true</param-value>
-    </init-param>
-  </filter>
-  <filter-mapping>
-    <filter-name>shiroFilter</filter-name>
-    <url-pattern>/*</url-pattern>
-  </filter-mapping>
+	<!-- 配置Shiro过滤器,先让Shiro过滤系统接收到的请求 这里filter-name必须对应applicationContext.xml中定义的<bean 
+		id="shiroFilter"/> 使用[/*]匹配所有请求,保证所有的可控请求都经过Shiro的过滤 通常会将此filter-mapping放置到最前面(即其他filter-mapping前面),以保证它是过滤器链中第一个起作用的 -->
+	<filter>
+		<filter-name>shiroFilter</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+		<init-param>
+			<param-name>targetFilterLifecycle</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>shiroFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<!-- druid数据监控    start-->
+	<servlet>
+		<servlet-name>DruidStatView</servlet-name>
+		<servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DruidStatView</servlet-name>
+		<url-pattern>/druid/*</url-pattern>
+	</servlet-mapping>
+	<filter>
+		<filter-name>DruidWebStatFilter</filter-name>
+		<filter-class>com.alibaba.druid.support.http.WebStatFilter</filter-class>
+		<init-param>
+			<param-name>exclusions</param-name>
+			<param-value>*.js,*.gif,*.jpg,*.png,*.css,*.ico,*.jpgx,/druid/*</param-value>
+		</init-param>
+		<init-param>
+			<param-name>principalSessionName</param-name>
+			<param-value>session_login_user_id</param-value>
+		</init-param>
+		<init-param>
+			<param-name>profileEnable</param-name>
+			<param-value>true</param-value>
+		</init-param>
+		<init-param>
+			<param-name>sessionStatMaxCount</param-name>
+			<param-value>2000</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>DruidWebStatFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+	<!--数据监控end  -->
+	<!-- SpringMVC核心分发器 -->
+	<servlet>
+		<servlet-name>SpringMVC</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath:springmvc-servlet.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SpringMVC</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
 
-<!--   SpringMVC核心分发器 -->
-  <servlet>
-    <servlet-name>SpringMVC</servlet-name>
-    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-    <init-param>
-      <param-name>contextConfigLocation</param-name>
-      <param-value>classpath:springmvc-servlet.xml</param-value>
-    </init-param>
-    <load-on-startup>1</load-on-startup>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>SpringMVC</servlet-name>
-    <url-pattern>/</url-pattern>
-  </servlet-mapping>
-
-  <!-- 默认欢迎页 -->
-  <!-- Servlet2.5中可直接在此处执行Servlet应用,如<welcome-file>servlet/InitSystemParamServlet</welcome-file> -->
-  <!-- 这里使用的是SpringMVC提供的<mvc:view-controller>标签,实现了首页隐藏的目的 -->
-  <!-- 
-  <welcome-file-list>
-    <welcome-file>login.jsp</welcome-file>
-  </welcome-file-list>
-   -->
-  <!-- 
-  <error-page>
-    <error-code>405</error-code>
-    <location>/WEB-INF/405.html</location>
-  </error-page>
-  <error-page>
-    <error-code>404</error-code>
-    <location>/WEB-INF/404.html</location>
-  </error-page>
-  <error-page>
-    <error-code>500</error-code>
-    <location>/WEB-INF/500.html</location>
-  </error-page>
-  <error-page>
-    <error-code>javax.servle.ServletException</error-code>
-    <location>/WEB-INF/error.html</location>
-  </error-page>
-  <error-page>
-    <error-code>java.lang.NullPointerException</error-code>
-    <location>/WEB-INF/error.html</location>
-  </error-page>
- -->
- <!--允许session共享  -->
- <distributable/>
+	<!-- 默认欢迎页 -->
+	<!-- Servlet2.5中可直接在此处执行Servlet应用,如<welcome-file>servlet/InitSystemParamServlet</welcome-file> -->
+	<!-- 这里使用的是SpringMVC提供的<mvc:view-controller>标签,实现了首页隐藏的目的 -->
+	<!-- <welcome-file-list> <welcome-file>login.jsp</welcome-file> </welcome-file-list> -->
+	<!-- <error-page> <error-code>405</error-code> <location>/WEB-INF/405.html</location> 
+		</error-page> <error-page> <error-code>404</error-code> <location>/WEB-INF/404.html</location> 
+		</error-page> <error-page> <error-code>500</error-code> <location>/WEB-INF/500.html</location> 
+		</error-page> <error-page> <error-code>javax.servle.ServletException</error-code> 
+		<location>/WEB-INF/error.html</location> </error-page> <error-page> <error-code>java.lang.NullPointerException</error-code> 
+		<location>/WEB-INF/error.html</location> </error-page> -->
+	<!--允许session共享 -->
+	<distributable />
 </web-app>
 
