@@ -45,9 +45,9 @@
 
 
 	<!-- spring 监听器 -->
-	<listener>
+	<!-- <listener>
 		<listener-class>net.bull.javamelody.SessionListener</listener-class>
-	</listener>
+	</listener> -->
 
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>

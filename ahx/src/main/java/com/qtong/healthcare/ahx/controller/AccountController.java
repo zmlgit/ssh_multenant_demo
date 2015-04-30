@@ -43,7 +43,7 @@ public class AccountController {
 		root.setRoles(adminRole());
 
 		accountService.saveUser(root);
-		return "/";
+		return "redirect:/";
 	}
 
 	private Set<Role> adminRole() {

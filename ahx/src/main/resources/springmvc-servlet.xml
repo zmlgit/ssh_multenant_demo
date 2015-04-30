@@ -33,15 +33,15 @@
 	<!-- 拦截器 -->
 	<!-- <mvc:interceptors> <bean class="com.core.mvc.MyInteceptor" /> </mvc:interceptors> -->
 	<!-- 对静态资源文件的访问 方案一 （二选一） -->
-	 <mvc:default-servlet-handler/> 
+	<!--  <mvc:default-servlet-handler/>  -->
 
 	<!-- 对静态资源文件的访问 方案二 （二选一） -->
-	<!-- <mvc:resources mapping="/images/**" location="/images/"
+	 <mvc:resources mapping="/images/**" location="/images/"
 		cache-period="31556926" />
 	<mvc:resources mapping="/style/**" location="/style/"
 		cache-period="31556926" />
 	<mvc:resources location="/lib/" mapping="/lib/**"
-		cache-period="31556926" /> -->
+		cache-period="31556926" /> 
 
 
 </beans>
