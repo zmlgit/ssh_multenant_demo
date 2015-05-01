@@ -1,15 +1,19 @@
 package com.qtong.healthcare.ahx.utils;
 
-import com.google.common.base.Preconditions;
-import com.google.common.base.Strings;
-import com.qtong.healthcare.ahx.model.User;
+import java.security.Key;
+
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.codec.Hex;
 import org.apache.shiro.crypto.AesCipherService;
+import org.apache.shiro.crypto.RandomNumberGenerator;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.Md5Hash;
+import org.apache.shiro.crypto.hash.SimpleHash;
+import org.apache.shiro.util.ByteSource;
 
-import java.security.Key;
+import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
+import com.qtong.healthcare.ahx.model.User;
 
 /**
  * Created by ZML on 2015/4/22.
@@ -76,5 +80,35 @@ public class EndecryptUtils {
         user.setPassword(password_cipherText);
         user.setSalt(salt);
         return user;
+    }
+    
+    private static RandomNumberGenerator randomNumberGenerator = new SecureRandomNumberGenerator();
+
+    private static String algorithmName = "md5";
+    private static int hashIterations = 2;
+
+    public void setRandomNumberGenerator(RandomNumberGenerator randomNumberGenerator) {
+        EndecryptUtils.randomNumberGenerator = randomNumberGenerator;
+    }
+
+    public void setAlgorithmName(String algorithmName) {
+        EndecryptUtils.algorithmName = algorithmName;
+    }
+
+    public void setHashIterations(int hashIterations) {
+        EndecryptUtils.hashIterations = hashIterations;
+    }
+
+    public static void encryptPassword(User user) {
+
+        user.setSalt(randomNumberGenerator.nextBytes().toHex());
+
+        String newPassword = new SimpleHash(
+                algorithmName,
+                user.getPassword(),
+                ByteSource.Util.bytes(user.getSalt()),
+                hashIterations).toHex();
+
+        user.setPassword(newPassword);
     }
 }

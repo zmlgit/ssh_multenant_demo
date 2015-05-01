@@ -25,7 +25,7 @@ public class AccountService implements IAccountService {
 
     public void saveUser(User user){
 
-     EndecryptUtils.md5Password(user);
+     EndecryptUtils.encryptPassword(user);
 
         userDao.save(user);
 

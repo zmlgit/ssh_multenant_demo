@@ -1,7 +1,10 @@
 package com.qtong.healthcare.ahx.service.security;
 
+import javax.annotation.Resource;
+
 import com.qtong.healthcare.ahx.model.User;
 import com.qtong.healthcare.ahx.service.IAccountService;
+
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -15,7 +18,8 @@ import org.apache.shiro.util.ByteSource;
 public class SecurityRealm extends AuthorizingRealm{
 
     private IAccountService accountService;
-
+    
+    @Resource
     public void setAccountService(IAccountService accountService) {
         this.accountService = accountService;
     }

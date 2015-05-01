@@ -7,7 +7,6 @@
     <bean id="securityRealm" class="com.qtong.healthcare.ahx.service.security.SecurityRealm">
         <property name="credentialsMatcher" ref="credentialsMatcher"/>
 
-
     </bean>
 
     <bean class="org.apache.shiro.cache.ehcache.EhCacheManager"
@@ -18,6 +17,8 @@
 
     <bean id="credentialsMatcher" class="com.qtong.healthcare.ahx.service.security.RetryLimitHashedCredentialsMatcher">
         <constructor-arg index="0" ref="ehCacheManager"/>
+        <property name="hashAlgorithmName" value="MD5"/>
+        <property name="hashIterations" value="2"></property>
     </bean>
     <!-- 会话ID生成器 -->
     <bean id="sessionIdGenerator"
@@ -87,7 +88,7 @@
 
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager"/>
-        <property name="loginUrl" value="/"/>
+        <property name="loginUrl" value="/login"/>
         <property name="successUrl" value="/main"/>
         <property name="unauthorizedUrl" value="/"/>
         <property name="filters">
@@ -102,7 +103,7 @@
                 /images/** =anon
                 /login.jsp=anon
                 /js/** =anon
-                /login=anon
+                /login=authc
                 /style/*=anon
                 /logout =anon
                 /druid/**=anon
@@ -120,7 +121,7 @@
         <property name="usernameParam" value="username"/>
         <property name="passwordParam" value="password"/>
         <property name="rememberMeParam" value="rememberMe"/>
-        <property name="loginUrl" value="/"/>
+        
     </bean>
 
 

@@ -4,8 +4,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.qtong.healthcare.ahx.model.Action;
@@ -27,7 +31,7 @@ public class AccountController {
 		this.accountService = accountService;
 	}
 
-	@RequestMapping(name = "/init")
+	@RequestMapping("/init")
 	public String initSystem() {
 
 		User root = new User();
@@ -37,7 +41,7 @@ public class AccountController {
 		root.setLocked(false);
 
 		root.setUsername("root");
-		
+
 		root.setPassword("root");
 
 		root.setRoles(adminRole());
@@ -115,5 +119,29 @@ public class AccountController {
 
 		return actions;
 
+	}
+
+	@RequestMapping("/login")
+	public String showLoginForm(HttpServletRequest request, Model model) {
+
+		String exceptionClassName = (String) request
+				.getAttribute("shiroLoginFailure");
+		String error = null;
+		if (UnknownAccountException.class.getName().equals(exceptionClassName)) {
+			error = "用户名错误";
+		} else if (IncorrectCredentialsException.class.getName().equals(
+				exceptionClassName)) {
+			error = "密码错误";
+		} else if (exceptionClassName != null) {
+			error = "其他错误：" + exceptionClassName;
+		}
+		model.addAttribute("error", error);
+
+		return "login";
+	}
+	@RequestMapping("/main")
+	public String main() {
+		return "main";
+		
 	}
 }

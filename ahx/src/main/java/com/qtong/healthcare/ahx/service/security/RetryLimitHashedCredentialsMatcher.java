@@ -27,12 +27,16 @@ public class RetryLimitHashedCredentialsMatcher extends HashedCredentialsMatcher
     public boolean doCredentialsMatch(AuthenticationToken token, AuthenticationInfo info) {
         String username = (String)token.getPrincipal();
         //retry count + 1
-        AtomicInteger retryCount = (AtomicInteger) passwordRetryCache.get(username).getObjectValue();
-        if(retryCount == null) {
+        AtomicInteger retryCount=null;
+        Element userCache= passwordRetryCache.get(username);
+         
+        if(userCache == null) {
             retryCount = new AtomicInteger(0);
 
             Element element=new Element(username,retryCount);
             passwordRetryCache.put(element);
+        }else{
+        	retryCount = (AtomicInteger) passwordRetryCache.get(username).getObjectValue();
         }
         if(retryCount.incrementAndGet() > 5) {
             //if retry count > 5 throw
