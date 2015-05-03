@@ -68,6 +68,7 @@
 				<entry key="hibernate.hbm2ddl.auto" value="${ahx.hibernate.hbm2ddl.auto}" />
 				<entry key="hibernate.format_sql" value="${ahx.hibernate.format_sql}" />
 				<entry key="hibernate.dialect" value="${ahx.hibernate.dialect}" />
+				<entry key="hibernate.enable_lazy_load_no_trans" value="true"></entry>
 				<!--<entry key="hibernate.multiTenancy" value="DATABASE"/> -->
 				<!--<entry key="hibernate.tenant_identifier_resolver" value="com.qtong.healthcare.ahx.dao.TenantIdResolver"/> -->
 				<!--<entry key="hibernate.multi_tenant_connection_provider" value="com.qtong.healthcare.ahx.dao.SchemaBasedMultiTenantConnectionProvider"/> -->
@@ -116,8 +117,9 @@
 		<aop:pointcut id="centerService"
 			expression="execution(* com.qtong.healthcare..service..*(..))" />
 		<aop:advisor pointcut-ref="centerService" advice-ref="txadvice" />
-		
-		<aop:advisor advice-ref="druid-stat-interceptor" pointcut-ref="centerService"/>
+
+		<aop:advisor advice-ref="druid-stat-interceptor"
+			pointcut-ref="centerService" />
 	</aop:config>
 	<bean id="druid-stat-interceptor"
 		class="com.alibaba.druid.support.spring.stat.DruidStatInterceptor">

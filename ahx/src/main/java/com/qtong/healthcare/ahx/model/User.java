@@ -7,6 +7,8 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 /**
  * Created by ZML on 2015/4/16.
@@ -38,7 +40,11 @@ public class  User implements Serializable {
     private String mail;
 
     private Set<Role> roles;
+    
+    @JsonIgnore
     private String salt;
+    
+    
     private boolean locked;
 
     @Override
@@ -73,7 +79,7 @@ public class  User implements Serializable {
     public void setUsername(String username) {
         this.username = username;
     }
-
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
@@ -131,7 +137,7 @@ public class  User implements Serializable {
         this.tenant = tenant;
     }
 
-    @ManyToOne(targetEntity = Tenant.class,cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = Tenant.class,cascade = CascadeType.ALL,fetch=FetchType.EAGER)
     @JoinColumn(name = "tenantId")
     public Tenant getTenant() {
         return tenant;

@@ -6,11 +6,14 @@ import java.util.Set;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.qtong.healthcare.ahx.model.Action;
 import com.qtong.healthcare.ahx.model.Role;
@@ -124,6 +127,9 @@ public class AccountController {
 	@RequestMapping("/login")
 	public String showLoginForm(HttpServletRequest request, Model model) {
 
+		if (SecurityUtils.getSubject().isAuthenticated()) {
+			return "main";
+		}
 		String exceptionClassName = (String) request
 				.getAttribute("shiroLoginFailure");
 		String error = null;
@@ -139,9 +145,17 @@ public class AccountController {
 
 		return "login";
 	}
+
 	@RequestMapping("/main")
 	public String main() {
 		return "main";
-		
+
+	}
+
+	@RequestMapping(value = "/user")
+	public @ResponseBody
+	User getUserProperties(@RequestParam("username") String username) {
+		return accountService.queryUserByUsername(username);
+
 	}
 }

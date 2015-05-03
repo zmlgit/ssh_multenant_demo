@@ -65,14 +65,4 @@ public class Role implements Serializable {
     public void setActions(Set<Action> actions) {
         this.actions = actions;
     }
-//
-//    @ManyToMany(targetEntity = User.class)
-//    @JoinTable(name = "t_user_role", joinColumns = @JoinColumn(name = "userId"), inverseJoinColumns = @JoinColumn(name = "roleId"))
-//    public Set<User> getUsers() {
-//        return users;
-//    }
-//
-//    public void setUsers(Set<User> users) {
-//        this.users = users;
-//    }
 }

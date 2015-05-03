@@ -16,14 +16,9 @@
 	</context-param>
 
 	<!-- JavaMelody 性能监控 -->
-<!-- 	<filter>
-		<filter-name>monitoring</filter-name>
-		<filter-class>net.bull.javamelody.MonitoringFilter</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>monitoring</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping> -->
+	<!-- <filter> <filter-name>monitoring</filter-name> <filter-class>net.bull.javamelody.MonitoringFilter</filter-class> 
+		</filter> <filter-mapping> <filter-name>monitoring</filter-name> <url-pattern>/*</url-pattern> 
+		</filter-mapping> -->
 
 	<!-- 解决输出乱码问题 -->
 	<filter>
@@ -45,9 +40,8 @@
 
 
 	<!-- spring 监听器 -->
-	<!-- <listener>
-		<listener-class>net.bull.javamelody.SessionListener</listener-class>
-	</listener> -->
+	<!-- <listener> <listener-class>net.bull.javamelody.SessionListener</listener-class> 
+		</listener> -->
 
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
@@ -67,7 +61,7 @@
 		<filter-name>shiroFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-	<!-- druid数据监控    start-->
+	<!-- druid数据监控 start -->
 	<servlet>
 		<servlet-name>DruidStatView</servlet-name>
 		<servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class>
@@ -100,8 +94,8 @@
 		<filter-name>DruidWebStatFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-	
-	<!--数据监控end  -->
+
+	<!--数据监控end -->
 	<!-- SpringMVC核心分发器 -->
 	<servlet>
 		<servlet-name>SpringMVC</servlet-name>
@@ -129,5 +123,26 @@
 		<location>/WEB-INF/error.html</location> </error-page> -->
 	<!--允许session共享 -->
 	<distributable />
+	<filter>
+		<filter-name>openSessionInViewFilter</filter-name>
+		<filter-class>org.springframework.orm.hibernate4.support.OpenSessionInViewFilter</filter-class>
+		<init-param>
+			<param-name>singleSession</param-name>
+			<param-value>true</param-value>
+		</init-param>
+		<init-param>
+			<param-name>sessionFactoryBeanName</param-name>
+			<param-value>sessionFactory</param-value>
+		</init-param>
+	</filter>
+	<filter>
+		<filter-name>sitemesh</filter-name>
+		<!-- <filter-class>com.opensymphony.sitemesh.webapp.SiteMeshFilter</filter-class> -->
+		<filter-class>org.sitemesh.config.ConfigurableSiteMeshFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>sitemesh</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 </web-app>
 
