@@ -14,36 +14,31 @@
 <base href="<%=basePath%>">
 
 <title>My JSP 'main.jsp' starting page</title>
+<style type="text/css">
+.messagebox {
+	margin: auto;
+	hight: 500px;
+	width: 400px;
+	border: 1
+}
 
-<meta http-equiv="pragma" content="no-cache">
-<meta http-equiv="cache-control" content="no-cache">
-<meta http-equiv="expires" content="0">
-<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-<meta http-equiv="description" content="This is my page">
-<!--
-	<link rel="stylesheet" type="text/css" href="styles.css">
-	-->
-
+</style>
 </head>
-<script type="text/javascript"
-	src="${pageContext.request.contextPath}/lib/jquery-1.11.2.min.js"></script>
 <body>
+	<div class="messagebox">
 
-	<span> Welcome <shiro:user>
-			<shiro:principal></shiro:principal>
-		</shiro:user></span>
-	<div></div>
+		<div id="msg_rc"
+			style="width: 100%; height: 400px; border: 1;overflow: scroll;">
+		
+		</div>
+		<textarea rows="3" cols="40" style="height: 85px; width: 100%;"
+			id="msg" ></textarea>
+		<input type="button" value="发送" class="btn" style="float: right;" onclick="sendMsg()">
+	</div>
 	<script type="text/javascript">
-		$.post("user", {
-			username : "root"
-		}, function(data) {
-
-			$("div").text(data);
-		}, "text");
-
 		var ws = null;
 		function connectSocket() {
-			var target = 'ws://localhost:8080/ahx/websocket';
+			var target = 'ws://' + window.location.host + '/ahx/websocket';
 			if (target == '') {
 				alert('Please select server side connection implementation.');
 				return;
@@ -65,9 +60,7 @@
 			};
 			ws.onmessage = function(event) {
 				//接收到消息
-				// var pointData  = event.data;
-				// drawSocketCanvs(pointData);
-				document.getElementById("messagebox").value = event.data;
+				showMsg(event.data);
 
 			};
 			ws.onclose = function() {
@@ -105,6 +98,30 @@
 			console.log(msg);
 		}
 		connectSocket();
+		
+		
+		function sendMsg(){
+			var now=new Date();
+			
+			var value=$('#msg').val().toString().replace(/\'/g,'\\\'');
+			
+			
+			
+			var msg="{time:'"+timeStr(now)+"',msg:'"+value+"'}";
+			ws.send(msg);
+			$("#msg_rc").append("<div style='margin-left:auto;margin-right:2px;width:100px;'>"+$('#msg').val()+"</div>");
+			$('#msg').val("");
+		}
+		
+		function showMsg(msg){
+			$("#msg_rc").append("<p><em>"+msg+":</em></p>");
+			$("#msg_rc").append("<p>"+msg+":</p>");
+		}
+		
+		function timeStr(now){
+			
+			return now.getFullYear()+"-"+(now.getMonth()+1)+"-"+(now.getDate())+" "+(now.getHours())+":"+now.getMinutes()+":"+now.getSeconds();
+		}
 	</script>
 </body>
 </html>

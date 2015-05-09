@@ -6,7 +6,7 @@
 			+ path + "/";
 %>
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE HTML">
 <html>
 <head>
 
@@ -16,9 +16,17 @@
 </head>
 
 <body>
-
-
-<h1>Hello World</h1>
+	<form action="login" method="post" role="form">
+		<div class="form-group">
+			<label for="username">UserName:</label> <input name="username"
+				type="text">
+		</div>
+		<div class="form-group">
+			<label for="password">Password:</label> <input name="password"
+				type="text">
+		</div>
+		<input type="submit" class="btn" value="提交">
+	</form>
 
 </body>
 </html>

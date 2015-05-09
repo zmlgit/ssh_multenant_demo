@@ -31,7 +31,7 @@ public class WebSocketController implements WebSocketHandler,
 		logger.info(message);
 
 		System.out.println(session.getPrincipal());
-
+		
 		WebSocketMessage<String> back = new TextMessage("Server back");
 		session.sendMessage(back);
 
