@@ -125,5 +125,5 @@
 		class="com.alibaba.druid.support.spring.stat.DruidStatInterceptor">
 	</bean>
 
-	<import resource="classpath*:security/applicationSecurity.xml" />
+	<!-- <import resource="classpath*:security/applicationSecurity.xml" /> -->
 </beans>
